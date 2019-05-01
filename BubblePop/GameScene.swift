@@ -2,14 +2,14 @@
 //  GameScene.swift
 //  BubblePop
 //
-//  Created by user144252 on 4/22/19.
-//  Copyright © 2019 user144252. All rights reserved.
+//  Created by William Mitchell on 4/22/19.
+//  Copyright © 2019 William Mitchell. All rights reserved.
 //
 
 import SpriteKit
 import UIKit
 
-enum BallColors {
+enum BubbleColors {
     static let colors = [
         UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0), //red
         UIColor(red: 225/255, green: 0/255, blue: 127/255, alpha: 1.0), //pink
@@ -25,101 +25,110 @@ enum SwitchState: Int {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+//    var colorSwitch: SKSpriteNode!
+//
+//    var switchState:SwitchState = .red        //turning circle colour
+//    var currentColorIndex: Int?           // balls current colour
+    //color: PlayColors.colors[currentColorIndex!]
+
+    ///////////////////////////////////////////////////////
+    var bubbleArray: [SKShapeNode] = [SKShapeNode]()
+    let bubbleLimit: Int = 15
+    
     var currentColorIndex: Int?
-    let ball = SKSpriteNode(imageNamed: "ball")
+    var randColor: Int?
+    var randXPosition: Int?
+    var randYPosition: Int?
+    ///////////////////////////////////////////////////////
     
     override func didMove(to view: SKView) {
+        
         backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
-        setupScene()
-        //spawnBalls()
-        //adds an action to the list of actions executed by the node, schedules argument block to be run upon complteion of action
-        //run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnBalls), SKAction.wait(forDuration: 1.0)])))
-        //
-    }
-    
-    func setupScene() {
-        //World Physics
-        physicsWorld.gravity = CGVector(dx: 0, dy: -9.8/5)
-        physicsWorld.contactDelegate = self
-        //let moveToSide = SKAction.move(to: CGPoint(x: Int(arc4random()%1000), y: Int(arc4random()%1000)), duration: 2)
-        
-        //score stuff across top bar CODE here
-        let limit = 5
-        var counter = 0
-        
-        while counter < 5 {
-            spawnBalls()
-            counter = counter + 1
+        while (bubbleArray.count !=  bubbleLimit) {
+            spawnBubbles()
         }
         
-        /*print("before")
-        enumerateChildNodes(withName: "balls", using: { node, stop in
-            counter += 1
-            print("why")
-            if counter <= limit {
-                self.spawnBalls()
-                print("true")
-            }
-            else {
-                print("false")
-            }
-        })
-        print("after")*/
     }
     
-    func spawnBalls() {
-        ball.size = CGSize(width: 50, height: 50)
-        ball.name = "balls"
-        //ball.position = CGPoint(x: frame.midX, y: frame.midY)
-        ball.position = CGPoint(x: 500 * random(min: 0, max: 1), y: 500 * random(min: 0, max: 1))
-        addChild(ball)
+    func spawnBubbles() {
         
-        /*
-         if positionIsEmpty(point: position) {
-         ball.position = position
-         self.addChild(ball)
-         //ball.run(parallax1)
-         }*/
-    }
-    
-    //this needed?
-    func random() -> CGFloat {
-        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
-    }
-    
-    func random(min: CGFloat, max: CGFloat) -> CGFloat {
-        return random() * (max - min) + min
-    }
-    
-    func positionIsEmpty (point: CGPoint) -> Bool {
-        if ball.frame.contains(point) {
-            print("failed")
-            return false
+        //currentColorIndex = Int.random(in: 0...3)
+        let bubble = SKShapeNode(circleOfRadius: 40)
+        
+        bubble.name = "bubbleName"
+        bubble.fillColor = UIColor.white
+        
+        randXPosition = Int.random(in: (Int(frame.minX+25)...(Int(frame.maxX-25))))
+        randYPosition = Int.random(in: (Int(frame.minY+25)...(Int(frame.maxY-25))))
+        //ball.position = CGPoint(x: random(min: 0, max: 1), y: 500 * random(min: 0, max: 1))
+        
+        bubble.position = CGPoint(x: randXPosition!, y: randYPosition!)
+        
+        randColor = Int.random(in: 0...100)
+        
+        switch randColor! {
+        case 0..<6 :    //black
+            //bubble.fillColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+            bubble.fillColor = BubbleColors.colors[4]
+        case 6..<16 :    //blue
+            //bubble.fillColor = UIColor(red: 0/255, green: 255/255, blue: 255/255, alpha: 1.0)
+            bubble.fillColor = BubbleColors.colors[3]
+        case 16..<31 :    //green
+            //bubble.fillColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 1.0)
+            bubble.fillColor = BubbleColors.colors[2]
+        case 31..<61 :    //pink
+            //bubble.fillColor = UIColor(red: 225/255, green: 0/255, blue: 127/255, alpha: 1.0)
+            bubble.fillColor = BubbleColors.colors[1]
+        case 61..<100 :     //red
+            //bubble.fillColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+            bubble.fillColor = BubbleColors.colors[0]
+        default :
+            print("Error")
         }
-        print("success")
-        return true
-    }
-    /*func positionIsEmpty(point: CGPoint) -> Bool {
-        self.enumerateChildNodes(withName: "ballname", using: {
-            (node, stop) in
-            
-            let ball = node as! SKSpriteNode
-            if (ball.frame.contains(point)) {
-                //return false
+        
+        var isPositionEmpty = true
+        for i in 0..<bubbleArray.count {
+            if(bubble.intersects(bubbleArray[i])) {
+                isPositionEmpty = false
             }
-        })
-        return true
-    }*/
+        }
+        
+        if (isPositionEmpty) {
+            bubble.name = String(bubbleArray.count)
+            print(bubble.name!)
+            bubbleArray.append(bubble)
+            addChild(bubble)
+        }
+        print("size\(isPositionEmpty)")
+        
+//        if isPositionEmpty(point: position) {
+//            //bubble.position = position
+//
+//            bubbleArray.append(bubble)
+//        }
+    }
+    
+//    func isPositionEmpty (point: CGPoint) -> Bool {
+//        if bubble.frame.contains(point) {
+//            print("failed")
+//            return false
+//        }
+//        print("success")
+//        return true
+//    }
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self) //converts touch location into scene coordinates
-            //let ree = atPoint(location) as? ball { // sussed bookedmarked example
+            //let location = atPoint(self) as? bubble { // sussed bookedmarked example
             let node = self.nodes(at: location).first
             
-            if node?.name == "ballTouched" {
+            if node?.name == "bubbleName" {
                 //score ++
-                ball.removeFromParent()
-                spawnBalls()
+                //bubble.removeFromParent()
+                bubbleArray[index].
+                spawnBubbles()
             } else {
                 //let transition = SKTransition.fade(withDuration: 1)
                 //gameScene = SKScene(fileNamed: "GameScene")

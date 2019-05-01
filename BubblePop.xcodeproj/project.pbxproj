@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38F9CFEE22792F6B00449320 /* GameIntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F9CFED22792F6B00449320 /* GameIntroScene.swift */; };
 		BD40F039226D911000331451 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD40F038226D911000331451 /* MenuScene.swift */; };
 		BD40F03B226D926600331451 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD40F03A226D926600331451 /* Settings.swift */; };
 		BD67C603226D8B14003DD06B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD67C602226D8B14003DD06B /* AppDelegate.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38F9CFED22792F6B00449320 /* GameIntroScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameIntroScene.swift; sourceTree = "<group>"; };
 		BD40F038226D911000331451 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		BD40F03A226D926600331451 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BD67C5FF226D8B14003DD06B /* BubblePop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BubblePop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,8 +97,9 @@
 			isa = PBXGroup;
 			children = (
 				BDBA77C9226DE8C2003B889C /* Balls.swift */,
-				BD67C608226D8B14003DD06B /* GameScene.swift */,
 				BD40F038226D911000331451 /* MenuScene.swift */,
+				38F9CFED22792F6B00449320 /* GameIntroScene.swift */,
+				BD67C608226D8B14003DD06B /* GameScene.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38F9CFEE22792F6B00449320 /* GameIntroScene.swift in Sources */,
 				BD67C609226D8B14003DD06B /* GameScene.swift in Sources */,
 				BD40F039226D911000331451 /* MenuScene.swift in Sources */,
 				BDBA77CA226DE8C2003B889C /* Balls.swift in Sources */,
