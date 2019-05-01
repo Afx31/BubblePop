@@ -7,7 +7,7 @@
 //
 
 import SpriteKit
-//import GameplayKit
+import UIKit
 
 enum BallColors {
     static let colors = [
@@ -23,51 +23,115 @@ enum SwitchState: Int {
     case red, pink, green, blue, black
 }
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    //var redBall: SKSpriteNode!
-    //var switchState: SwitchState = .red
-    //var currentColorIndex: Int?
+    var currentColorIndex: Int?
+    let ball = SKSpriteNode(imageNamed: "ball")
     
-    
-    
-    
-    
-    //score label
-    let scoreLabel = SKLabelNode(text: "0")
-    var score = 0
-    /*
     override func didMove(to view: SKView) {
-        setupPhysics()
-        layoutScene()
-    }*/
-    
-    func setupPhysics() {
-        //physicsWorld.gravity = CGVector(dx: 0, dy: -9.8/5)
-        //physicsWorld.contactDelegate = self
-    }
-    
-    func layoutScene() {
-        //backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
-        
-        //redBall = SKSpriteNode(imageNamed: "ball")
-        //redBall.size = CGSize(width: frame.size.width/3, height: frame.size.width/3)
-        //redBall.position
-        //redBall.zPosition
-    }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+        setupScene()
+        //spawnBalls()
+        //adds an action to the list of actions executed by the node, schedules argument block to be run upon complteion of action
+        //run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnBalls), SKAction.wait(forDuration: 1.0)])))
         
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        spawnBalls()
+    func setupScene() {
+        //World Physics
+        physicsWorld.gravity = CGVector(dx: 0, dy: -9.8/5)
+        physicsWorld.contactDelegate = self
+        //let moveToSide = SKAction.move(to: CGPoint(x: Int(arc4random()%1000), y: Int(arc4random()%1000)), duration: 2)
+        
+        //score stuff across top bar CODE here
+        let limit = 5
+        var counter = 0
+        
+        while counter < 5 {
+            spawnBalls()
+            counter = counter + 1
+        }
+        
+        /*print("before")
+        enumerateChildNodes(withName: "balls", using: { node, stop in
+            counter += 1
+            print("why")
+            if counter <= limit {
+                self.spawnBalls()
+                print("true")
+            }
+            else {
+                print("false")
+            }
+        })
+        print("after")*/
     }
     
     func spawnBalls() {
-        let balls = Balls(image: SKSpriteNode(imageNamed: "ball"))
-        self.addChild(balls)
+        ball.size = CGSize(width: 50, height: 50)
+        ball.name = "balls"
+        //ball.position = CGPoint(x: frame.midX, y: frame.midY)
+        ball.position = CGPoint(x: 500 * random(min: 0, max: 1), y: 500 * random(min: 0, max: 1))
+        addChild(ball)
+        
+        /*
+         if positionIsEmpty(point: position) {
+         ball.position = position
+         self.addChild(ball)
+         //ball.run(parallax1)
+         }*/
+    }
+    
+    //this needed?
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return random() * (max - min) + min
+    }
+    
+    func positionIsEmpty (point: CGPoint) -> Bool {
+        if ball.frame.contains(point) {
+            print("failed")
+            return false
+        }
+        print("success")
+        return true
+    }
+    /*func positionIsEmpty(point: CGPoint) -> Bool {
+        self.enumerateChildNodes(withName: "ballname", using: {
+            (node, stop) in
+            
+            let ball = node as! SKSpriteNode
+            if (ball.frame.contains(point)) {
+                //return false
+            }
+        })
+        return true
+    }*/
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: self) //converts touch location into scene coordinates
+            //let ree = atPoint(location) as? ball { // sussed bookedmarked example
+            let node = self.nodes(at: location).first
+            
+            if node?.name == "ballTouched" {
+                //score ++
+                ball.removeFromParent()
+                spawnBalls()
+            } else {
+                //let transition = SKTransition.fade(withDuration: 1)
+                //gameScene = SKScene(fileNamed: "GameScene")
+                //gameScene.scaleMode = .aspectFit
+                //self.view?.presentScene(gameScene, transition: transition)
+            }
+            /*
+            let touchedNode = self.atPoint(point)
+            if touchedNode.name == "ballname" {
+                touchedNode.removeFromParent()
+            }*/
+        }
     }
     
 }

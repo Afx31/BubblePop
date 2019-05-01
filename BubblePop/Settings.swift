@@ -7,7 +7,7 @@
 //
 
 import SpriteKit
-/*
+
 enum PhysicsCategories {
     static let none: UInt32 = 0 //no physical simulation for this category
     static let ballCategory: UInt32 = 0x1 << 0      //01
@@ -18,4 +18,4 @@ enum ZPositions { //node positions (layering)
     static let label: CGFloat = 0
     static let ball: CGFloat = 1
     static let colorSwitch: CGFloat = 2
-}*/
+}
