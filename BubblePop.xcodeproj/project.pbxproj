@@ -19,6 +19,8 @@
 		BD67C61E226D8B15003DD06B /* BubblePopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD67C61D226D8B15003DD06B /* BubblePopTests.swift */; };
 		BD67C629226D8B16003DD06B /* BubblePopUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD67C628226D8B16003DD06B /* BubblePopUITests.swift */; };
 		BDBA77CA226DE8C2003B889C /* Balls.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBA77C9226DE8C2003B889C /* Balls.swift */; };
+		BDE2B93F227E8806002A72A5 /* SettingsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE2B93E227E8806002A72A5 /* SettingsScene.swift */; };
+		BDE75E5E227D21C100500E38 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE75E5D227D21C100500E38 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		BD67C628226D8B16003DD06B /* BubblePopUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePopUITests.swift; sourceTree = "<group>"; };
 		BD67C62A226D8B16003DD06B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDBA77C9226DE8C2003B889C /* Balls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balls.swift; sourceTree = "<group>"; };
+		BDE2B93E227E8806002A72A5 /* SettingsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScene.swift; sourceTree = "<group>"; };
+		BDE75E5D227D21C100500E38 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +102,10 @@
 			children = (
 				BDBA77C9226DE8C2003B889C /* Balls.swift */,
 				BD40F038226D911000331451 /* MenuScene.swift */,
+				BDE2B93E227E8806002A72A5 /* SettingsScene.swift */,
 				38F9CFED22792F6B00449320 /* GameIntroScene.swift */,
 				BD67C608226D8B14003DD06B /* GameScene.swift */,
+				BDE75E5D227D21C100500E38 /* GameOverScene.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -305,9 +311,11 @@
 			files = (
 				38F9CFEE22792F6B00449320 /* GameIntroScene.swift in Sources */,
 				BD67C609226D8B14003DD06B /* GameScene.swift in Sources */,
+				BDE75E5E227D21C100500E38 /* GameOverScene.swift in Sources */,
 				BD40F039226D911000331451 /* MenuScene.swift in Sources */,
 				BDBA77CA226DE8C2003B889C /* Balls.swift in Sources */,
 				BD67C60B226D8B14003DD06B /* GameViewController.swift in Sources */,
+				BDE2B93F227E8806002A72A5 /* SettingsScene.swift in Sources */,
 				BD67C603226D8B14003DD06B /* AppDelegate.swift in Sources */,
 				BD40F03B226D926600331451 /* Settings.swift in Sources */,
 			);

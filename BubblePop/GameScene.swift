@@ -25,64 +25,176 @@ enum SwitchState: Int {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-//    var colorSwitch: SKSpriteNode!
-//
-//    var switchState:SwitchState = .red        //turning circle colour
-//    var currentColorIndex: Int?           // balls current colour
-    //color: PlayColors.colors[currentColorIndex!]
-
-    ///////////////////////////////////////////////////////
     var bubbleArray: [SKShapeNode] = [SKShapeNode]()
+    //let bubbleLimit: Int = UserDefaults.standard.integer(forKey: "MaxBubbles")
     let bubbleLimit: Int = 15
-    
-    var currentColorIndex: Int?
     var randColor: Int?
     var randXPosition: Int?
     var randYPosition: Int?
-    ///////////////////////////////////////////////////////
+    var globalPoints: Int = 0
+    var scoreLabel = SKLabelNode()
+    var levelTimerLabel = SKLabelNode()
     
+    var prevScoreCalcTime: TimeInterval = 0
+    
+    //after levelTimerLabel variable is set, update label's text
+    
+    //var levelTimerValue: Int = UserDefaults.standard.integer(forKey: "GameTime") {
+    var levelTimerValue: Int = 60 {
+        didSet {
+            levelTimerLabel.text = "Time left: \(levelTimerValue)"
+        }
+    }
+    ///////////////////////////////////////////////////////
     override func didMove(to view: SKView) {
-        
-        backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+        backgroundColor = UIColor.white
+        spawnGameTimer()
+        spawnPoints()
+        temp()
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if currentTime - prevScoreCalcTime > 1 {
+            prevScoreCalcTime = currentTime
+            wipeScene()
+            temp()
+        }
+    }
+    
+    func temp() {
         while (bubbleArray.count !=  bubbleLimit) {
             spawnBubbles()
         }
+    }
+    
+    func wipeScene() {
+        //for i in 0..<bubbleArray.count {
+        //    bubbleArray[i].removeFromParent()
+        //}
+        while bubbleArray.count > 0 {
+            bubbleArray[0].removeFromParent()
+            bubbleArray.remove(at: 0)
+        }
+        bubbleArray.removeAll()
+    }
+    
+    func spawnPoints() {
+        scoreLabel = SKLabelNode(text: "Score: \(globalPoints)")
+        scoreLabel.fontName = "ArialMT"
+        scoreLabel.fontSize = 20.0
+        scoreLabel.fontColor = UIColor.black
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 50)
+        addChild(scoreLabel)
+    }
+    
+    func spawnGameTimer() {
+        levelTimerLabel = SKLabelNode(text: "Time left: ")
+        levelTimerLabel.fontName = "ArialMT"
+        levelTimerLabel.fontColor = UIColor.black
+        levelTimerLabel.fontSize = 20.0
+        levelTimerLabel.position = CGPoint(x: frame.minX + 60, y: frame.maxY - 50)
+        levelTimerLabel.text = "Time left: \(levelTimerValue)" // maybe remove and just update the timer value
+        addChild(levelTimerLabel)
         
+        let wait = SKAction.wait(forDuration: 1.0)
+        let block = SKAction.run ({
+            [unowned self] in
+            
+            if self.levelTimerValue > 0 {
+                self.levelTimerValue -= 1
+            } else {
+                UserDefaults.standard.set(self.globalPoints, forKey: "RecentScore")
+                if self.globalPoints > UserDefaults.standard.integer(forKey: "Highscore"){
+                    UserDefaults.standard.set(self.globalPoints, forKey: "Highscore")
+                }
+                
+                let gameOverScene = GameOverScene(size: self.view!.bounds.size)
+                self.view?.presentScene(gameOverScene)
+            }
+        })
+        let sequence = SKAction.sequence([wait, block])
+        run(SKAction.repeatForever(sequence))
+    }
+    
+    func pointsCalc(_ index:Int) {
+        switch bubbleArray[index].fillColor {
+        case BubbleColors.colors[0] :
+            globalPoints += 1
+        case BubbleColors.colors[1] :
+            globalPoints += 2
+        case BubbleColors.colors[2] :
+            globalPoints += 5
+        case BubbleColors.colors[3] :
+            globalPoints += 8
+        case BubbleColors.colors[4] :
+            globalPoints += 10
+        default :
+            print("scoreLabel error")
+        }
+        scoreLabel.text = ("Score: \(globalPoints)")
+    }
+    
+    func bonusPointsCalc(_ index:Int) {
+        switch bubbleArray[index].fillColor {
+        case BubbleColors.colors[0] :
+            globalPoints += 2
+        case BubbleColors.colors[1] :
+            globalPoints += 3
+        case BubbleColors.colors[2] :
+            globalPoints += 8
+        case BubbleColors.colors[3] :
+            globalPoints += 12
+        case BubbleColors.colors[4] :
+            globalPoints += 15
+        default :
+            print("scoreLabel error")
+        }
+        scoreLabel.text = ("Score: \(globalPoints)")
+    }
+    
+    func findIndex(_ name: String) -> Int {
+        for i in 0..<bubbleArray.count {
+            if name == bubbleArray[i].name {
+                return i
+            }
+        }
+        return -1
+    }
+
+    func isMatch(_ name: String) -> Bool {
+        if(findIndex(name) != -1) {
+            return true
+        }
+        return false
     }
     
     func spawnBubbles() {
         
-        //currentColorIndex = Int.random(in: 0...3)
-        let bubble = SKShapeNode(circleOfRadius: 40)
+        let bubble = SKShapeNode(circleOfRadius: 35)
         
-        bubble.name = "bubbleName"
+        //bubble.name = "bubbleName"
         bubble.fillColor = UIColor.white
         
-        randXPosition = Int.random(in: (Int(frame.minX+25)...(Int(frame.maxX-25))))
-        randYPosition = Int.random(in: (Int(frame.minY+25)...(Int(frame.maxY-25))))
+        randXPosition = Int.random(in: (Int(frame.minX+40)...(Int(frame.maxX-40))))
+        randYPosition = Int.random(in: (Int(frame.minY+40)...(Int(frame.maxY-40))))
         //ball.position = CGPoint(x: random(min: 0, max: 1), y: 500 * random(min: 0, max: 1))
         
         bubble.position = CGPoint(x: randXPosition!, y: randYPosition!)
-        
         randColor = Int.random(in: 0...100)
         
         switch randColor! {
         case 0..<6 :    //black
-            //bubble.fillColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
             bubble.fillColor = BubbleColors.colors[4]
         case 6..<16 :    //blue
-            //bubble.fillColor = UIColor(red: 0/255, green: 255/255, blue: 255/255, alpha: 1.0)
             bubble.fillColor = BubbleColors.colors[3]
         case 16..<31 :    //green
-            //bubble.fillColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 1.0)
             bubble.fillColor = BubbleColors.colors[2]
         case 31..<61 :    //pink
-            //bubble.fillColor = UIColor(red: 225/255, green: 0/255, blue: 127/255, alpha: 1.0)
             bubble.fillColor = BubbleColors.colors[1]
         case 61..<100 :     //red
-            //bubble.fillColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
             bubble.fillColor = BubbleColors.colors[0]
         default :
+            bubble.fillColor = BubbleColors.colors[0]
             print("Error")
         }
         
@@ -92,22 +204,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 isPositionEmpty = false
             }
         }
-        
         if (isPositionEmpty) {
             bubble.name = String(bubbleArray.count)
-            print(bubble.name!)
+            print("name: \(bubble.name!)")
             bubbleArray.append(bubble)
             addChild(bubble)
         }
-        print("size\(isPositionEmpty)")
-        
-//        if isPositionEmpty(point: position) {
-//            //bubble.position = position
-//
-//            bubbleArray.append(bubble)
-//        }
     }
-    
 //    func isPositionEmpty (point: CGPoint) -> Bool {
 //        if bubble.frame.contains(point) {
 //            print("failed")
@@ -116,30 +219,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        print("success")
 //        return true
 //    }
-    
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self) //converts touch location into scene coordinates
-            //let location = atPoint(self) as? bubble { // sussed bookedmarked example
-            let node = self.nodes(at: location).first
-            
-            if node?.name == "bubbleName" {
-                //score ++
-                //bubble.removeFromParent()
-                bubbleArray[index].
-                spawnBubbles()
-            } else {
-                //let transition = SKTransition.fade(withDuration: 1)
-                //gameScene = SKScene(fileNamed: "GameScene")
-                //gameScene.scaleMode = .aspectFit
-                //self.view?.presentScene(gameScene, transition: transition)
+            let touchedNode = self.atPoint(location)
+                
+            if let name = touchedNode.name {
+                if isMatch(name) { //if node touched (5) name is same as array[5]'s name
+                    let index = findIndex(name)
+                    var previousNode = bubbleArray[index].fillColor
+                    
+                    if previousNode == bubbleArray[index].fillColor {
+                        bonusPointsCalc(index)
+                        previousNode = bubbleArray[index].fillColor
+                        bubbleArray[index].removeFromParent()
+                        bubbleArray.remove(at: index)
+                        spawnBubbles()
+                    } else {
+                        pointsCalc(index)
+                        previousNode = bubbleArray[index].fillColor
+                        bubbleArray[index].removeFromParent()
+                        bubbleArray.remove(at: index)
+                        spawnBubbles()
+                    }
+                }
             }
-            /*
-            let touchedNode = self.atPoint(point)
-            if touchedNode.name == "ballname" {
-                touchedNode.removeFromParent()
-            }*/
         }
     }
     

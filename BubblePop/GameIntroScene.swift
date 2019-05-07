@@ -12,17 +12,15 @@ import UIKit
 class GameIntroScene: SKScene {
     
     override func didMove(to view: SKView) {
-        
-        backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
-        setupCountDown()
-        
+        backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
+        setupCountDown()        
     }
     
     func setupCountDown() {
         
         let countDown = SKLabelNode(text: "3")
-        countDown.fontName = "AvenirNext-Bold"
-        countDown.fontSize = 50.0
+        countDown.fontName = "ArialMT"
+        countDown.fontSize = 150.0
         countDown.fontColor = UIColor.white
         countDown.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(countDown)
