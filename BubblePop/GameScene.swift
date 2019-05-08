@@ -26,21 +26,17 @@ enum SwitchState: Int {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var bubbleArray: [SKShapeNode] = [SKShapeNode]()
-    //let bubbleLimit: Int = UserDefaults.standard.integer(forKey: "MaxBubbles")
-    let bubbleLimit: Int = 15
+    let bubbleLimit: Int = GameSettings.maxBubbles
     var randColor: Int?
     var randXPosition: Int?
     var randYPosition: Int?
     var globalPoints: Int = 0
     var scoreLabel = SKLabelNode()
     var levelTimerLabel = SKLabelNode()
-    
     var prevScoreCalcTime: TimeInterval = 0
+    var previousNode: Int?
     
-    //after levelTimerLabel variable is set, update label's text
-    
-    //var levelTimerValue: Int = UserDefaults.standard.integer(forKey: "GameTime") {
-    var levelTimerValue: Int = 60 {
+    var levelTimerValue: Int = GameSettings.maxTime {
         didSet {
             levelTimerLabel.text = "Time left: \(levelTimerValue)"
         }
@@ -119,33 +115,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func pointsCalc(_ index:Int) {
         switch bubbleArray[index].fillColor {
         case BubbleColors.colors[0] :
-            globalPoints += 1
+            if previousNode == 0 {
+                globalPoints += Int(1.5 * 1)
+            } else {
+                globalPoints += 1
+            }
+            previousNode = 0
         case BubbleColors.colors[1] :
-            globalPoints += 2
+            if previousNode == 1 {
+                globalPoints += Int(1.5 * 2)
+            } else {
+                globalPoints += 2
+            }
+            previousNode = 1
         case BubbleColors.colors[2] :
-            globalPoints += 5
+            if previousNode == 2 {
+                globalPoints += Int(1.5 * 5)
+            } else {
+                globalPoints += 5
+            }
+            previousNode = 2
         case BubbleColors.colors[3] :
-            globalPoints += 8
+            if previousNode == 3 {
+                globalPoints += Int(1.5 * 8)
+            } else {
+                globalPoints += 8
+            }
+            previousNode = 3
         case BubbleColors.colors[4] :
-            globalPoints += 10
-        default :
-            print("scoreLabel error")
-        }
-        scoreLabel.text = ("Score: \(globalPoints)")
-    }
-    
-    func bonusPointsCalc(_ index:Int) {
-        switch bubbleArray[index].fillColor {
-        case BubbleColors.colors[0] :
-            globalPoints += 2
-        case BubbleColors.colors[1] :
-            globalPoints += 3
-        case BubbleColors.colors[2] :
-            globalPoints += 8
-        case BubbleColors.colors[3] :
-            globalPoints += 12
-        case BubbleColors.colors[4] :
-            globalPoints += 15
+            if previousNode == 4 {
+                globalPoints += Int(1.5 * 10)
+            } else {
+                globalPoints += 10
+            }
+            previousNode = 4
         default :
             print("scoreLabel error")
         }
@@ -176,7 +179,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bubble.fillColor = UIColor.white
         
         randXPosition = Int.random(in: (Int(frame.minX+40)...(Int(frame.maxX-40))))
-        randYPosition = Int.random(in: (Int(frame.minY+40)...(Int(frame.maxY-40))))
+        randYPosition = Int.random(in: (Int(frame.minY+40)...(Int(frame.maxY-40))))        
         //ball.position = CGPoint(x: random(min: 0, max: 1), y: 500 * random(min: 0, max: 1))
         
         bubble.position = CGPoint(x: randXPosition!, y: randYPosition!)
@@ -225,23 +228,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let touchedNode = self.atPoint(location)
                 
             if let name = touchedNode.name {
-                if isMatch(name) { //if node touched (5) name is same as array[5]'s name
+                if isMatch(name) {
                     let index = findIndex(name)
-                    var previousNode = bubbleArray[index].fillColor
-                    
-                    if previousNode == bubbleArray[index].fillColor {
-                        bonusPointsCalc(index)
-                        previousNode = bubbleArray[index].fillColor
-                        bubbleArray[index].removeFromParent()
-                        bubbleArray.remove(at: index)
-                        spawnBubbles()
-                    } else {
-                        pointsCalc(index)
-                        previousNode = bubbleArray[index].fillColor
-                        bubbleArray[index].removeFromParent()
-                        bubbleArray.remove(at: index)
-                        spawnBubbles()
-                    }
+                    pointsCalc(index)
+                    bubbleArray[index].removeFromParent()
+                    bubbleArray.remove(at: index)
+                    spawnBubbles()
                 }
             }
         }

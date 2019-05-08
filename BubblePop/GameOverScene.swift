@@ -13,6 +13,8 @@ class GameOverScene: SKScene {
     
     var menuButton = UIButton()
     var playAgainButton = UIButton()
+    var highScoreLabel = UILabel()
+    var recentScoreLabel = UILabel()
     ///////////////////////////////////////////////////////////////////////////
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
@@ -58,22 +60,17 @@ class GameOverScene: SKScene {
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 100)
         addChild(gameOverLabel)
         
-        let recentScoreLabel = SKLabelNode(text: "Your Score: " + "\(UserDefaults.standard.integer(forKey: "RecentScore"))")
-        recentScoreLabel.fontName = "AvenirNext-Bold"
-        recentScoreLabel.fontSize = 40.0
-        recentScoreLabel.fontColor = UIColor.white
-        //recentScoreLabel.position = CGPoint(x: frame.midX, y: frame.midY - recentScoreLabel.frame.height * 2.5)
-        recentScoreLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100)
-        addChild(recentScoreLabel)
+        highScoreLabel.text = "Highscore: " + "\(UserDefaults.standard.integer(forKey: "Highscore"))"
+        highScoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        highScoreLabel.textColor = UIColor.white
+        view?.addSubview(highScoreLabel)
+        //centerContainerView.addSubview(highScoreLabel)
         
-        
-        let highScoreLabel = SKLabelNode(text: "Highscore: " + "\(UserDefaults.standard.integer(forKey: "Highscore"))")
-        highScoreLabel.fontName = "AvenirNext-Bold"
-        highScoreLabel.fontSize = 40.0
-        highScoreLabel.fontColor = UIColor.white
-        //highScoreLabel.position = CGPoint(x: frame.midX, y: frame.midY - highScoreLabel.frame.size.height * 4)
-        highScoreLabel.position = CGPoint(x: frame.midX, y: frame.midY)
-        addChild(highScoreLabel)
+        recentScoreLabel.text = "Recent score: " + "\(UserDefaults.standard.integer(forKey: "RecentScore"))"
+        recentScoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        recentScoreLabel.textColor = UIColor.white
+        view?.addSubview(recentScoreLabel)
+        //centerContainerView.addSubview(recentScoreLabel)
     }
     
 }
