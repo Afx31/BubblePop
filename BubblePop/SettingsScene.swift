@@ -22,6 +22,7 @@ class SettingsScene: SKScene {
     var maxBubblesLabel = UILabel()
     
     override func didMove(to view: SKView) {
+        //backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
         backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
         setupLayout()
         addSliders()
@@ -95,6 +96,8 @@ class SettingsScene: SKScene {
         playButton.isHidden = true
         gameTimeSlider.isHidden = true
         maxBubblesSlider.isHidden = true
+        gameTimeLabel.isHidden = true
+        maxBubblesLabel.isHidden = true
     }
     
     func addSliders() {

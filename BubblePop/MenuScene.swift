@@ -32,17 +32,6 @@ class MenuScene: SKScene, UITextFieldDelegate {
     }
     
     func setupConstraints() {
-//        let topContainerView = UIView()
-//        topContainerView.backgroundColor = .red
-//        view?.addSubview(topContainerView)
-//        topContainerView.translatesAutoresizingMaskIntoConstraints = false//
-//        topContainerView.leadingAnchor.constraint(equalTo: view!.leadingAnchor).isActive = true
-//        topContainerView.trailingAnchor.constraint(equalTo: view!.trailingAnchor).isActive = true
-//        topContainerView.topAnchor.constraint(equalTo: view!.topAnchor).isActive = true
-//        topContainerView.heightAnchor.constraint(equalTo: view!.heightAnchor, multiplier: 0.5).isActive = true
-//        topContainerView.addSubview(playButton)
-//        playButton.centerXAnchor.constraint(equalTo: topContainerView.centerXAnchor).isActive = true
-//        playButton.centerYAnchor.constraint(equalTo: topContainerView.centerYAnchor).isActive = true
         
         centerContainerView.translatesAutoresizingMaskIntoConstraints = false
         centerContainerView.centerXAnchor.constraint(equalTo: view!.centerXAnchor).isActive = true
