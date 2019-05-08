@@ -99,7 +99,7 @@ class SettingsScene: SKScene {
         gameTimeLabel.isHidden = true
         maxBubblesLabel.isHidden = true
     }
-    
+    //
     func addSliders() {
         gameTimeSlider = UISlider(frame: CGRect(x: 10, y: 100, width: 300, height: 20))
         gameTimeSlider.minimumValue = 1
