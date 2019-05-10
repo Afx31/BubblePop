@@ -12,71 +12,57 @@ class SettingsScene: SKScene {
     
     let centerContainerView = UIView()
     var playButton = UIButton()
+    var gameTimeLabel = UILabel()
+    var maxBubblesLabel = UILabel()
     var gameTimeSlider = UISlider()
     var maxBubblesSlider = UISlider()
     
     var tempMaxTime = GameSettings.maxTime
     var tempMaxBubbles = GameSettings.maxBubbles
     
-    var gameTimeLabel = UILabel()
-    var maxBubblesLabel = UILabel()
-    
     override func didMove(to view: SKView) {
-        //backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
         backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
-        setupLayout()
+        view.addSubview(centerContainerView)
         addSliders()
         addButtons()
         addLabels()
         setupConstraints()
     }
     
-    func setupLayout() {
-        //centerContainerView.backgroundColor = .blue
-        view?.addSubview(centerContainerView)
-    }
-    
+    //The Constraints function is used to create a inner view section where all the
+    //variables can be positioned and anchored to one another
     func setupConstraints() {
-        
         centerContainerView.translatesAutoresizingMaskIntoConstraints = false
         centerContainerView.centerXAnchor.constraint(equalTo: view!.centerXAnchor).isActive = true
         centerContainerView.centerYAnchor.constraint(equalTo: view!.centerYAnchor).isActive = true
         centerContainerView.widthAnchor.constraint(equalTo: view!.widthAnchor, multiplier: 0.7).isActive = true
         centerContainerView.heightAnchor.constraint(equalTo: view!.heightAnchor, multiplier: 0.7).isActive = true
         
-        //slider label
         gameTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         gameTimeLabel.centerXAnchor.constraint(equalTo: playButton.centerXAnchor).isActive = true
         gameTimeLabel.topAnchor.constraint(equalTo: gameTimeSlider.topAnchor, constant: -60).isActive = true
         
-        //slider
         gameTimeSlider.translatesAutoresizingMaskIntoConstraints = false
         gameTimeSlider.centerXAnchor.constraint(equalTo: centerContainerView.centerXAnchor).isActive = true
         gameTimeSlider.bottomAnchor.constraint(equalTo: maxBubblesLabel.topAnchor, constant: -30).isActive = true
         gameTimeSlider.widthAnchor.constraint(equalTo: centerContainerView.widthAnchor).isActive = true
         gameTimeSlider.heightAnchor.constraint(equalTo: centerContainerView.heightAnchor, multiplier: 0.1).isActive = true
-        
-        //slider label           CENTER
+        //Centered variable
         maxBubblesLabel.translatesAutoresizingMaskIntoConstraints = false
         maxBubblesLabel.centerXAnchor.constraint(equalTo: centerContainerView.centerXAnchor).isActive = true
         maxBubblesLabel.centerYAnchor.constraint(equalTo: centerContainerView.centerYAnchor).isActive = true
         
-        //slider
         maxBubblesSlider.translatesAutoresizingMaskIntoConstraints = false
         maxBubblesSlider.centerXAnchor.constraint(equalTo: centerContainerView.centerXAnchor).isActive = true
         maxBubblesSlider.topAnchor.constraint(equalTo: maxBubblesLabel.bottomAnchor, constant: +30).isActive = true
         maxBubblesSlider.widthAnchor.constraint(equalTo: centerContainerView.widthAnchor).isActive = true
         maxBubblesSlider.heightAnchor.constraint(equalTo: centerContainerView.heightAnchor, multiplier: 0.1).isActive = true
         
-        //play button
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.centerXAnchor.constraint(equalTo: centerContainerView.centerXAnchor).isActive = true
         playButton.topAnchor.constraint(equalTo: maxBubblesSlider.bottomAnchor, constant: +80).isActive = true
         playButton.widthAnchor.constraint(equalTo: centerContainerView.widthAnchor, multiplier: 0.8).isActive = true
         playButton.heightAnchor.constraint(equalTo: centerContainerView.heightAnchor, multiplier: 0.1).isActive = true
-        
-        /////////back arrow?
-
     }
 
     func addButtons() {
@@ -99,7 +85,7 @@ class SettingsScene: SKScene {
         gameTimeLabel.isHidden = true
         maxBubblesLabel.isHidden = true
     }
-    //
+    
     func addSliders() {
         gameTimeSlider = UISlider(frame: CGRect(x: 10, y: 100, width: 300, height: 20))
         gameTimeSlider.minimumValue = 1

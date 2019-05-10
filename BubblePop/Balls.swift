@@ -6,7 +6,6 @@
 //  Copyright © 2019 William Mitchell. All rights reserved.
 //
 
-import Foundation
 import SpriteKit
 
 class Balls: SKNode {

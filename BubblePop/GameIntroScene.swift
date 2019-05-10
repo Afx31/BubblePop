@@ -11,33 +11,34 @@ import UIKit
 
 class GameIntroScene: SKScene {
     
+    var countDown = SKLabelNode()
+    
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(red: 44/255, green: 62/255, blue: 80/255, alpha: 1.0)
-        setupCountDown()        
+        addLabel()
+        setupCountDown()
     }
     
-    func setupCountDown() {
-        
-        let countDown = SKLabelNode(text: "3")
+    func addLabel() {
+        countDown = SKLabelNode(text: "3")
         countDown.fontName = "ArialMT"
         countDown.fontSize = 150.0
         countDown.fontColor = UIColor.white
         countDown.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(countDown)
+    
+    }
+    
+    //The func displays a flashing series of 3, 2, 1 to countdown the user into the game
+    func setupCountDown() {
         
-        //make them 0.5 or 0.4
-        ////////////////
-        ////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        countDown.run(SKAction.fadeOut(withDuration: 0.1)) {
-            countDown.text = "2"
-            countDown.run(SKAction.fadeIn(withDuration: 0.1)) {
-                countDown.run(SKAction.fadeOut(withDuration: 0.1)) {
-                    countDown.text = "1"
-                    countDown.run(SKAction.fadeIn(withDuration: 0.1)) {
-                        countDown.run(SKAction.fadeOut(withDuration: 0.1)) {
+        countDown.run(SKAction.fadeOut(withDuration: 0.5)) {
+            self.countDown.text = "2"
+            self.countDown.run(SKAction.fadeIn(withDuration: 0.5)) {
+                self.countDown.run(SKAction.fadeOut(withDuration: 0.5)) {
+                    self.countDown.text = "1"
+                    self.countDown.run(SKAction.fadeIn(withDuration: 0.5)) {
+                        self.countDown.run(SKAction.fadeOut(withDuration: 0.5)) {
                             let gameScene = GameScene(size: self.view!.bounds.size)
                             self.view!.presentScene(gameScene)
                         }
@@ -45,6 +46,7 @@ class GameIntroScene: SKScene {
                 }
             }
         }
+        
     }
     
 }
